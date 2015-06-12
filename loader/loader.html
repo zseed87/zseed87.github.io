@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>lodaing</title>
+<style type="text/css">
+body{
+	background-color: #000;
+}
+#container{
+	position: relative;
+	width: 100px;
+	height: 100px;
+	/*background-color: #6cf;*/
+	margin: 100px auto;
+}
+.point{
+	position: absolute;
+	width: 12px;
+	height: 12px;
+	background-color: #fff;
+	border-radius: 100%;
+	display: none;
+}
+</style>
+</head>
+<body>
+    <div id="container">
+    	<div class="point"></div>
+    	<div class="point"></div>
+    	<div class="point"></div>
+    	<div class="point"></div>
+    	<div class="point"></div>
+    	<div class="point"></div>
+    	<div class="point"></div>
+    	<div class="point"></div>
+    </div>
+<script type="text/javascript">
+window.onload = loading();
+function loading(){
+	//半径
+	var ctr = document.getElementById('container');
+	var point = ctr.getElementsByTagName('div');
+	var radius = (ctr.offsetHeight - point[0].offsetHeight) / 2;
+	var len = point.length;
+	//每一个point对应的角度;
+	var avd = 360/point.length;
+	//每一个point对应的弧度;
+	var ahd = avd*Math.PI/180;
+	//存储每一个point的透明度
+	var loops = [1.0, 0.75, 0.5, 0.25, 0, 0, 0, 0];
+	//计算每一个point的位置并显示
+	for (var i = 0; i < len; i++) {
+		console.log(Math.sin((ahd * i)) * radius + radius + "px")
+		point[i].style.left = Math.sin((ahd * i)) * radius + radius + "px";
+		point[i].style.top = Math.cos((ahd * i)) * radius + radius + "px";
+		point[i].style.display = "block";
+	}
+	//定时设置透明值，模拟动画
+	setInterval(function(){
+		for (var i = 0; i < len; i++) {
+			point[i].style.opacity = loops[i];
+			point[i].style.filter = 'alpha(opacity:'+ loops[i] * 100 +')';
+		}
+		loops.push(loops.shift());
+	}, 100);
+}
+</script>
+</body>
+</html>

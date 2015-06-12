@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title>example</title>
+<style type="text/css">
+     /* CSS样式制作 */
+    html,body,div,ul,li{
+        margin:0;
+        padding:0;
+    }
+    .container{
+        width: 500px;
+        margin: 10px auto 0;
+    }
+    table{
+        width:50%;
+        margin: 10px auto;
+        border-collapse:collapse;
+    }
+    th, td{
+        border:1px solid #ccc;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <span>姓名：</span><input id="name" type="text" />
+        <span>年龄：</span><input id="age" type="text" />
+        <button id="add">添加</button>
+    </div>
+    <table id="table">
+        <thead>
+            <tr>
+                <th>I&emsp;D</th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>张三</td>
+                <td>13</td>
+                <td><a href="#" onclick="del(this)">删除</a></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>李四</td>
+                <td>14</td>
+                <td><a href="#" onclick="del(this)">删除</a></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>杨五</td>
+                <td>15</td>
+                <td><a href="#" onclick="del(this)">删除</a></td>
+            </tr>
+        </tbody>
+    </table>
+<script type="text/javascript">
+(function(){
+    var table = document.getElementById('table');
+    var name = document.getElementById('name');
+    var age = document.getElementById('age');
+    var add = document.getElementById('add');
+    add.onclick = function(){
+        if(!name.value || !age.value){
+            alert("内容不能为空！");
+            return;
+        }
+        var newTr = document.createElement('tr');
+        var newId = document.createElement('td');
+        newId.innerHTML = table.tBodies[0].rows.length + 1;
+        var newName = document.createElement('td');
+        newName.innerHTML = name.value;
+        var newAge = document.createElement('td');
+        newAge.innerHTML = age.value;
+        var newDel = document.createElement('td');
+        newDel.innerHTML = '<a href="#" onclick="del(this)">删除</a>';
+        newTr.appendChild(newId);
+        newTr.appendChild(newName);
+        newTr.appendChild(newAge);
+        newTr.appendChild(newDel);
+        table.tBodies[0].appendChild(newTr);
+    };
+})();
+function del(obj){
+    var table = document.getElementById('table');
+    table.tBodies[0].removeChild(obj.parentNode.parentNode);
+}
+</script>
+</body>
+</html>

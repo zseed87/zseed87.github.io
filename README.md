@@ -1,2 +1,2 @@
-# a8471327.github.io
-test github pages
+# html-css
+一些关于html和css的demo，主要是兴趣和对学过的知识的巩固

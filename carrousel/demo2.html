@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<link rel="stylesheet" type="text/css" href="../style/reset.css">
+<style type="text/css">
+.container{
+	position: relative;
+	width: 460px;
+	height: 440px;
+	margin: 100px auto 0;
+	background-color: #6cf;
+	overflow: hidden;
+}
+#bigBox{
+	position: relative;
+	width: 460px;
+	height: 344px;
+}
+.bigPic{
+	position: absolute;
+	width: 460px;
+	height: 344px;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	z-index: -1;
+}
+.one{
+	background-image: url(images/9.jpg);
+	z-index: 0;
+}
+.two{
+	background-image: url(images/11.jpg);
+}
+.three{
+	background-image: url(images/13.jpg);
+}
+.four{
+	background-image: url(images/16.jpg);
+}
+.five{
+	background-image: url(images/20.jpg);
+}
+.six{
+	background-image: url(images/23.jpg);
+}
+#smallBox{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 2000px;
+	padding: 5px;
+}
+.smallPic{
+	float: left;
+	margin-right: 5px;
+	width: 115px;
+	height: 86px;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	opacity: .5;
+	cursor: pointer;
+}
+.smallPic:hover, .smallPic.one{
+	opacity: 1;
+}
+.control a{
+	display: block;
+	position: absolute;
+	width: 45px;
+	height: 45px;
+	top: 150px;
+	opacity: .5;
+	z-index: 999;
+}
+.control a:hover{
+	opacity: 1;
+}
+#prev{
+	background: url(images/png24.png) no-repeat left top;
+	left: 10px;
+}
+#next{
+	background: url(images/png24.png) no-repeat left -47px;
+	right: 10px;
+}
+</style>
+</head>
+<body>
+    <div class="container">
+    	<div id="bigBox">
+    		<div class="bigPic one"></div>
+    		<div class="bigPic two"></div>
+    		<div class="bigPic three"></div>
+    		<div class="bigPic four"></div>
+    		<div class="bigPic five"></div>
+    		<div class="bigPic six"></div>
+    		<div class="control">
+    			<a href="#" id="prev"></a>
+    			<a href="#" id="next"></a>
+    		</div>
+    	</div>
+    	<ul id="smallBox" class="clearfix">
+    		<li class="smallPic one"></li>
+    		<li class="smallPic two"></li>
+    		<li class="smallPic three"></li>
+    		<li class="smallPic four"></li>
+    		<li class="smallPic five"></li>
+    		<li class="smallPic six"></li>
+    	</ul>
+    </div>
+<script type="text/javascript" src="../js/my.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+	var prev = document.getElementById('prev');
+	var next = document.getElementById('next');
+	var bBox = document.getElementById('bigBox');
+	var sBox = document.getElementById('smallBox');
+	var bPic = getByClass('bigPic', bBox);
+	var sPic = getByClass('smallPic', sBox);
+	var ctr = getByClass('container')[0];
+	var idx = 0;
+	var len = bPic.length;
+	var h = getStyle(bBox, "height");
+	var zIdx = 0;
+	prev.onclick = function(){
+		if(idx == 0)	return;
+		idx--;
+		switchPic();
+	}
+	next.onclick = function(){
+		if(idx == len - 1)	return;
+		idx++;
+		switchPic();
+	}
+	for(var i = 0; i < len; i++){
+		sPic[i].idx = i;
+	}
+	sBox.onclick = function(e){
+		var ev = e || event;
+		if(!ev.target.idx)	return;
+		idx = ev.target.idx;
+		switchPic();
+	}
+	function switchPic(){
+		for(var i = 0; i < len; i++){
+			sPic[i].style.filter = 'alpha(opacity: 50)';
+			sPic[i].style.opacity = 0.5;
+		}
+		sPic[idx].style.opacity = 1;
+		sPic[idx].style.filter = 'alpha(opacity: 100)';
+		var limit = 120 * len + 5 - parseInt(getStyle(ctr, "width"));
+		var left = 120 * idx > limit ? -limit : -120 * idx;
+		startMove(sBox, {"left": left});
+		bPic[idx].style.height = 0;
+		bPic[idx].style.zIndex = ++zIdx;
+		startMove(bPic[idx], {"height": parseInt(h)});
+	}
+}
+</script>
+</body>
+</html>

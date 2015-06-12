@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>3d旋转木马</title>
+<style type="text/css">
+    .warp{
+        -webkit-perspective: 800px;
+        -ms-perspective: 800px;
+        perspective:800px;
+    }
+    .club{
+        -webkit-transform-style: preserve-3d;
+        -ms-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+        -webkit-transition: transform 1s ease-in-out;
+        -ms-transition: transform 1s ease-in-out;
+        transition: transform 1s ease-in-out;
+        position: relative;
+        width:230px;
+        height:172px;
+        margin:100px auto;
+    }
+    .club img{
+        -webkit-transition: transform 1s ease-in-out;
+        -ms-transition: transform 1s ease-in-out;
+        transition: transform 1s ease-in-out;
+        position: absolute;
+        width:230px;
+        height:172px;
+    }
+    img:nth-child(1){
+        -webkit-transform:rotateY(0deg) translateZ(280px);
+        -ms-transform:rotateY(0deg) translateZ(280px);
+        transform:rotateY(0deg) translateZ(280px);
+    }
+    img:nth-child(2){
+        -webkit-transform:rotateY(60deg) translateZ(280px);
+        -ms-transform:rotateY(60deg) translateZ(280px);
+        transform:rotateY(60deg) translateZ(280px);
+    }
+    img:nth-child(3){
+        -webkit-transform:rotateY(120deg) translateZ(280px);
+        -ms-transform:rotateY(120deg) translateZ(280px);
+        transform:rotateY(120deg) translateZ(280px);
+    }
+    img:nth-child(4){
+        -webkit-transform:rotateY(180deg) translateZ(280px);
+        -ms-transform:rotateY(180deg) translateZ(280px);
+        transform:rotateY(180deg) translateZ(280px);
+    }
+    img:nth-child(5){
+        -webkit-transform:rotateY(240deg) translateZ(280px);
+        -ms-transform:rotateY(240deg) translateZ(280px);
+        transform:rotateY(240deg) translateZ(280px);
+    }
+    img:nth-child(6){
+        -webkit-transform:rotateY(300deg) translateZ(280px);
+        -ms-transform:rotateY(300deg) translateZ(280px);
+        transform:rotateY(300deg) translateZ(280px);
+    }
+    .btn{
+        margin: 50px auto;
+        width: 200px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+    }
+    .btn:after{
+        content:"";
+        clear: both;
+        height: 0;
+        visibility: hidden;
+        display: block;
+    }
+    .prev, .next{
+        width:70px;
+        margin: 0 15px;
+        float: left;
+        cursor: pointer;
+        box-shadow: 0 0 20px #999;
+        -webkit-transition: background .5s ease-in-out;
+        -ms-transition: background .5s ease-in-out;
+        transition: background .5s ease-in-out;
+    }
+    .prev:hover, .next:hover{
+        background: #6cf;
+    }
+</style>
+</head>
+<body>
+    <div class="warp">
+        <div class="club" id="box">
+            <img src="./images/9.jpg" alt="">
+            <img src="./images/11.jpg" alt="">
+            <img src="./images/13.jpg" alt="">
+            <img src="./images/16.jpg" alt="">
+            <img src="./images/20.jpg" alt="">
+            <img src="./images/23.jpg" alt="">
+        </div>
+    </div>
+    <div class="btn" id="btn">
+        <div class="prev">上一张</div>
+        <div class="next">下一张</div>
+    </div>
+
+<script type="text/javascript">
+    (function(){
+        var oBox = document.getElementById('box');
+        var oBtn = document.getElementById('btn');
+        var boxDeg = 0;
+        oBtn.onclick = function(ev){
+            var obj = ev || event;
+            var str = obj.target.innerHTML;
+            switch(str) {
+                case "上一张":
+                    boxDeg += 60;
+                    break;
+                case "下一张":
+                    boxDeg -= 60;
+                    break;
+            }
+            oBox.style.transform = "rotateY("+boxDeg+"deg)";
+        };
+    })()
+</script>
+</body>
+</html>

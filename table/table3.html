@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title>example</title>
+<style type="text/css">
+     /* CSS样式制作 */
+    html,body,div,ul,li{
+        margin:0;
+        padding:0;
+    }
+    .container{
+        width: 500px;
+        margin: 10px auto 0;
+    }
+    table{
+        width:50%;
+        margin: 10px auto;
+        border-collapse:collapse;
+    }
+    td{
+        width: 25%;
+    }
+    th, td{
+        border:1px solid #ccc;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <input type="radio" name="search" value="light" checked="true" />高亮
+        <input type="radio" name="search" value="choose" />筛选
+        <input id="text" type="text" />
+        <button id="search">搜索</button>
+    </div>
+    <table id="table">
+        <thead>
+            <tr>
+                <th>I&emsp;D</th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>张三</td>
+                <td>13</td>
+                <td><a href="#">删除</a></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>李四</td>
+                <td>14</td>
+                <td><a href="#">删除</a></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>杨五</td>
+                <td>15</td>
+                <td><a href="#">删除</a></td>
+            </tr>
+        </tbody>
+    </table>
+<script type="text/javascript">
+(function(){
+    var text = document.getElementById('text');
+    var search = document.getElementById('search');
+    var table = document.getElementById('table');
+    var tr = table.tBodies[0].rows;
+    search.onclick = function(){
+        if(!text.value){
+            alert("请输入搜索内容！");
+            return;
+        }
+        var type = document.getElementsByName("search");
+        var typeVal = "";
+        for (var i = 0; i < type.length; i++) {
+            if(type[i].checked == true){
+                typeVal = type[i].value;
+                break;
+            }
+        };
+        //高亮
+        if(typeVal == "light"){
+            for(var i = 0; i < tr.length; i++){
+                tr[i].style.backgroundColor = "#fff";
+                tr[i].style.display = "";
+            }
+            for(var i = 0; i < tr.length; i++){
+                for(var j = 0; j < 3; j++){
+                    if(tr[i].cells[j].innerHTML.search(text.value) != -1){
+                        tr[i].style.backgroundColor = "#6cf";
+                    }
+                }
+            }
+        }else if(typeVal == "choose"){
+            //筛选
+            for(var i = 0; i < tr.length; i++){
+                tr[i].style.backgroundColor = "#fff";
+                tr[i].style.display = "none";
+            }
+            for(var i = 0; i < tr.length; i++){
+                for(var j = 0; j < 3; j++){
+                    if(tr[i].cells[j].innerHTML.search(text.value) != -1){
+                        tr[i].style.display = "";
+                    }
+                }
+            }
+        }
+    }
+})();
+</script>
+</body>
+</html>

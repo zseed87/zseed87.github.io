@@ -1,0 +1,14 @@
+@charset "UTF-8";
+html,body,ul,ol,li,table,div,p,input{margin: 0;padding: 0;}
+a, a:hover{text-decoration: none;}
+ul,ol,li{list-style: none;}
+.clearfix::after{
+	clear: both;
+	display: block;
+	height: 0;
+	visibility: hidden;
+	content: "";
+}
+.clearfix{
+	zoom: 1;
+}
