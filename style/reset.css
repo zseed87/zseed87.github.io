@@ -1,14 +1,8 @@
 @charset "UTF-8";
 html,body,ul,ol,li,table,div,p,input{margin: 0;padding: 0;}
-a, a:hover{text-decoration: none;}
+a, a:hover{text-decoration: none;color: #000;}
 ul,ol,li{list-style: none;}
-.clearfix::after{
-	clear: both;
-	display: block;
-	height: 0;
-	visibility: hidden;
-	content: "";
-}
-.clearfix{
-	zoom: 1;
-}
+a:focus,input,textarea{outline-style:none;}
+/*清除浮动*/
+.clearfix::after{clear: both;display: block;height: 0;visibility: hidden;content: "";}
+.clearfix{zoom: 1;}
