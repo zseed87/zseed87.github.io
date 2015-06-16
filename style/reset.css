@@ -1,5 +1,6 @@
 @charset "UTF-8";
 html,body,ul,ol,li,table,div,p,input{margin: 0;padding: 0;}
+body{font-family: Arial, Roboto, 'Droid Sans', 'Hiragino Sans GB', 'Microsoft YaHei', 'Simsun', STXihei, 'sans-serif';}
 a, a:hover{text-decoration: none;color: #000;}
 ul,ol,li{list-style: none;}
 a:focus,input,textarea{outline-style:none;}
