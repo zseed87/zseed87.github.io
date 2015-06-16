@@ -17,7 +17,7 @@ function getByClass(selector, parent){
 }
 
 function getStyle(obj, attr){
-	return obj.currentStyle ? obj.currentStyle(attr) : getComputedStyle(obj, null)[attr];
+	return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj, null)[attr];
 }
 
 function startMove(obj, json, fn){
