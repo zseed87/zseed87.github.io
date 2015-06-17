@@ -1,19 +1,23 @@
 function getByClass(selector, parent){
 	parent = parent ? parent : document;
-	var oAll = parent.getElementsByTagName('*');
-	var arr = [];
-	var len = oAll.length;
-	for(var i = 0; i < len; i++){
-		var aAll = oAll[i].className.split(' ');
-		var l = aAll.length;
-		for(var j = 0; j < l; j++){
-			if(aAll[j] == selector){
-				arr.push(oAll[i]);
-				break;
+	if(parent.getElementsByClassName){
+		return parent.getElementsByClassName(selector);
+	}else{
+		var oAll = parent.getElementsByTagName('*');
+		var arr = [];
+		var len = oAll.length;
+		for(var i = 0; i < len; i++){
+			var aAll = oAll[i].className.split(' ');
+			var l = aAll.length;
+			for(var j = 0; j < l; j++){
+				if(aAll[j] == selector){
+					arr.push(oAll[i]);
+					break;
+				}
 			}
 		}
+		return arr;
 	}
-	return arr;
 }
 
 function getStyle(obj, attr){
