@@ -322,4 +322,5 @@ Game2048.prototype = {
 		return true;
 	}
 };
+Game2048.prototype.constructor = Game2048;
 var run = new Game2048(3, 4);
