@@ -1,6 +1,6 @@
 ;(function(){
 	//一、二级菜单参数配置
-	var list_one = ["表格操作","轮播图","loading..."];
+	var list_one = ["表格操作","轮播图","loading动画","小游戏"];
 	var list_two = [
 		[
 			{"title":"../","url":"index.html"},
@@ -15,7 +15,11 @@
 		],
 		[
 			{"title":"../","url":"index.html"},
-			{"title":"简单的加载中动画","url":"loader/loader.html"},
+			{"title":"简单的加载中动画","url":"loader/loader.html"}
+		],
+		[
+			{"title":"../","url":"index.html"},
+			{"title":"2048","url":"2048/"},
 			{"title":"正方体6面翻转","url":"css3/cube.html"}
 		]
 	];

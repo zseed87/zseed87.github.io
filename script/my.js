@@ -24,7 +24,7 @@ function getStyle(obj, attr){
 	return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj, null)[attr];
 }
 
-function startMove(obj, json, fn){
+function startMove(obj, json, fn, speed){
 	clearInterval(obj.timer);
 	obj.timer = setInterval(function(){
 		var bStop = true;		//设置变量判断所有值是否到达目标值
@@ -35,7 +35,8 @@ function startMove(obj, json, fn){
 			}else{
 				iCur = parseInt(getStyle(obj, attr));
 			}
-			var iSpeed = (json[attr] - iCur) / 8;	//计算速度
+			var sp = speed ? speed : 8;
+			var iSpeed = (json[attr] - iCur) / sp;	//计算速度
 			iSpeed = iSpeed > 0 ? Math.ceil(iSpeed) : Math.floor(iSpeed);
 			if(iCur != json[attr]){		//判断是否到达目标值
 				bStop = false;
