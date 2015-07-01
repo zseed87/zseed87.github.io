@@ -1,6 +1,6 @@
 ;(function(){
 	//一、二级菜单参数配置
-	var list_one = ["表格操作","轮播图","loading动画","小游戏"];
+	var list_one = ["表格操作","小控件","小游戏"];
 	var list_two = [
 		[
 			{"title":"../","url":"index.html"},
@@ -11,10 +11,8 @@
 		[
 			{"title":"../","url":"index.html"},
 			{"title":"3D旋转木马","url":"carrousel/demo1.html"},
-			{"title":"仿妙味图片轮播","url":"carrousel/demo2.html"}
-		],
-		[
-			{"title":"../","url":"index.html"},
+			{"title":"仿妙味图片轮播","url":"carrousel/demo2.html"},
+			{"title":"可搜索的下拉框","url":"select/"},
 			{"title":"简单的加载中动画","url":"loader/loader.html"}
 		],
 		[
