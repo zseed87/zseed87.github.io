@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>模拟可搜索的下拉框</title>
+<link rel="stylesheet" tyole="text/css" href="../style/reset.css">
+<style type="text/css">
+.wrapper{
+	position: relative;
+	width: 200px;
+	margin: 0 auto;
+}
+.mySelect{
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+}
+.myOption{
+	position: absolute;
+	display: none;
+	width: 100%;
+	max-height: 150px;
+	border: 1px solid #ccc;
+	overflow-y: auto;
+}
+.myOption a {
+	display: block;
+	height: 30px;
+	line-height: 30px;
+}
+.myOption a:hover{
+	background-color: #1E90FF;
+}
+</style>
+</head>
+<body>
+	<div class="wrapper">
+		<input type="text" name="" id="mySelect" class="mySelect">
+		<div id="myOption" class="myOption"></div>
+	</div>
+<script type="text/javascript">
+window.onload = function(){
+	var data = [];
+	for(var i = 1; i < 100; i++){//模拟数据
+		data.push(i+"");
+	}
+	var mySelect = new searchSelect('mySelect', 'myOption', data);
+}
+
+var searchSelect = function(s, o, d){
+	this.select = document.getElementById(s);
+	this.option = document.getElementById(o);
+	this.data = d;
+	this.init();
+}
+searchSelect.prototype = {
+	init: function(){
+		this.listenClick();
+		this.listenKeyUp();
+	},
+	listenClick: function(){
+		var that = this;
+		this.select.onclick = function(ev){
+			var e = ev || event;
+			that.option.innerHTML = "";
+			that.option.style.display = "block";
+			var frag = document.createDocumentFragment();
+			for(var i = 0, len = that.data.length; i < len; i++){
+				var a = document.createElement('a');
+				a.href = "#";
+				a.innerHTML = that.data[i];
+				frag.appendChild(a);
+			}
+			that.option.appendChild(frag);
+			if (e.stopPropagation)	e.stopPropagation();
+			else	e.cancelBubble = true;
+		}
+
+		this.option.onclick = function(ev){
+			var e = ev || event;
+			if(e.target.href){
+				that.select.value = e.target.innerHTML;
+				that.option.style.display = "none";
+			}
+			if (e.stopPropagation)	e.stopPropagation();
+			else	e.cancelBubble = true;
+		}
+		document.onclick = function(){
+			if(that.option.style.display == "block"){
+				that.option.style.display = "none";
+			}
+		}
+	},
+	listenKeyUp: function(){
+		var that = this;
+		this.select.onkeyup = function(){
+			that.option.innerHTML = "";
+			var val = that.select.value;
+			var frag = document.createDocumentFragment();
+			for(var i = 0, len = that.data.length; i < len; i++){
+				if(that.data[i].toLowerCase().indexOf(val.toLowerCase()) != -1){
+					var a = document.createElement('a');
+					a.href = "#";
+					a.innerHTML = that.data[i];
+					frag.appendChild(a);
+				}
+			}
+			that.option.appendChild(frag);
+		}
+	}
+};
+searchSelect.prototype.constructor = searchSelect;
+</script>
+</body>
+</html>
