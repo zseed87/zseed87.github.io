@@ -81,7 +81,6 @@ searchSelect.prototype = {
 			for (var i = 0, len = aOption.length; i < len; i++) {
 				aOption[i].style.display = "none";
 			}
-			that.option.style.display = "block";
 			that.updateOption(true);
 			stopBubble(e);
 		}
@@ -117,6 +116,8 @@ searchSelect.prototype = {
 			}
 		}
 		this.option.appendChild(frag);
+		this.option.style.display == "none" && (this.option.style.display = "block");
+		this.option.innerHTML || (this.option.style.display = "none");
 	}
 };
 searchSelect.prototype.constructor = searchSelect;
