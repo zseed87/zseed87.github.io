@@ -83,8 +83,7 @@ searchSelect.prototype = {
 			}
 			that.option.style.display = "block";
 			that.updateOption(true);
-			if (e.stopPropagation)	e.stopPropagation();
-			else	e.cancelBubble = true;
+			stopBubble(e);
 		}
 
 		this.option.onclick = function(ev){
@@ -93,8 +92,7 @@ searchSelect.prototype = {
 				that.select.value = e.target.innerHTML;
 				that.option.style.display = "none";
 			}
-			if (e.stopPropagation)	e.stopPropagation();
-			else	e.cancelBubble = true;
+			stopBubble(e);
 		}
 		document.addEventListener('click', function(){
 			that.option.style.display == "block" && (that.option.style.display = "none");

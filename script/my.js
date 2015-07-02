@@ -62,7 +62,7 @@ function stopBubble(e){
         e.stopPropagation();
     }
     else{
-        window.event.cancelBubble=true;
+        e.cancelBubble=true;
     }
     return false;
 }
