@@ -39,23 +39,37 @@
 		<input type="text" name="" id="mySelect" class="mySelect">
 		<div id="myOption" class="myOption"></div>
 	</div>
+	<div class="wrapper" style="margin-top: 300px">
+		<input type="text" name="" id="mySelect2" class="mySelect">
+		<div id="myOption2" class="myOption"></div>
+	</div>
+<script type="text/javascript" src="../script/my.js"></script>
 <script type="text/javascript">
 window.onload = function(){
 	var data = [];
 	for(var i = 1; i < 100; i++){//模拟数据
 		data.push(i+"");
 	}
-	var mySelect = new searchSelect('mySelect', 'myOption', data);
+	var mySelect = new searchSelect();
+	mySelect.init({
+		select: "mySelect",
+		option: "myOption",
+		data: data
+	});
+	var mySelect2 = new searchSelect();
+	mySelect2.init({
+		select: "mySelect2",
+		option: "myOption2",
+		data: data
+	});
 }
-
-var searchSelect = function(s, o, d){
-	this.select = document.getElementById(s);
-	this.option = document.getElementById(o);
-	this.data = d;
-	this.init();
-}
+var searchSelect = function(){}
 searchSelect.prototype = {
-	init: function(){
+	init: function(opt){
+		this.select = document.getElementById(opt.select);
+		this.option = document.getElementById(opt.option);
+		this.data = opt.data;
+		this.cls = opt.cls || "myOption";
 		this.listenClick();
 		this.listenKeyUp();
 	},
@@ -63,16 +77,12 @@ searchSelect.prototype = {
 		var that = this;
 		this.select.onclick = function(ev){
 			var e = ev || event;
-			that.option.innerHTML = "";
-			that.option.style.display = "block";
-			var frag = document.createDocumentFragment();
-			for(var i = 0, len = that.data.length; i < len; i++){
-				var a = document.createElement('a');
-				a.href = "#";
-				a.innerHTML = that.data[i];
-				frag.appendChild(a);
+			var aOption = getByClass(that.cls);
+			for (var i = 0, len = aOption.length; i < len; i++) {
+				aOption[i].style.display = "none";
 			}
-			that.option.appendChild(frag);
+			that.option.style.display = "block";
+			that.updateOption(true);
 			if (e.stopPropagation)	e.stopPropagation();
 			else	e.cancelBubble = true;
 		}
@@ -86,28 +96,29 @@ searchSelect.prototype = {
 			if (e.stopPropagation)	e.stopPropagation();
 			else	e.cancelBubble = true;
 		}
-		document.onclick = function(){
-			if(that.option.style.display == "block"){
-				that.option.style.display = "none";
-			}
-		}
+		document.addEventListener('click', function(){
+			that.option.style.display == "block" && (that.option.style.display = "none");
+		}, false);
 	},
 	listenKeyUp: function(){
 		var that = this;
 		this.select.onkeyup = function(){
-			that.option.innerHTML = "";
-			var val = that.select.value;
-			var frag = document.createDocumentFragment();
-			for(var i = 0, len = that.data.length; i < len; i++){
-				if(that.data[i].toLowerCase().indexOf(val.toLowerCase()) != -1){
-					var a = document.createElement('a');
-					a.href = "#";
-					a.innerHTML = that.data[i];
-					frag.appendChild(a);
-				}
-			}
-			that.option.appendChild(frag);
+			that.updateOption();
 		}
+	},
+	updateOption: function(type){
+		this.option.innerHTML = "";
+		var val = this.select.value;
+		var frag = document.createDocumentFragment();
+		for(var i = 0, len = this.data.length; i < len; i++){
+			if(type || this.data[i].toLowerCase().indexOf(val.toLowerCase()) != -1){
+				var a = document.createElement('a');
+				a.href = "#";
+				a.innerHTML = this.data[i];
+				frag.appendChild(a);
+			}
+		}
+		this.option.appendChild(frag);
 	}
 };
 searchSelect.prototype.constructor = searchSelect;
