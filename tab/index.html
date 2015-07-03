@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>简单的选项卡</title>
+<link rel="stylesheet" type="text/css" href="../style/reset.css">
+<style type="text/css">
+.container{
+	position: relative;
+	width:300px;
+	height: 250px;
+	margin: 50px auto 0;
+	border: 1px solid #ccc;
+}
+.container ul{
+	position: absolute;
+	top: -43px;
+}
+.container ul li{
+	width: 80px;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	list-style: none;
+	display: inline-block;
+	cursor: pointer;
+	border: 1px solid #ccc;
+	border-bottom-color: transparent;
+	background-color: #fff;
+}
+.container .active{
+	height: 41px;
+}
+.content{
+	display: none;
+	height: 100%;
+	background-color: #fff;
+}
+</style>
+</head>
+<body>
+    <div class="container">
+    	<ul id="tab1">
+    		<li>tab1</li>
+    		<li>tab2</li>
+    		<li>tab3</li>
+    	</ul>
+    	<div id="content1">
+	    	<div class="content">
+	    		content1
+	    	</div>
+	    	<div class="content">
+	    		content2
+	    	</div>
+	    	<div class="content">
+	    		content3
+	    	</div>
+    	</div>
+    </div>
+    <div class="container">
+    	<ul id="tab2">
+    		<li>tab1</li>
+    		<li>tab2</li>
+    		<li>tab3</li>
+    	</ul>
+    	<div id="content2">
+	    	<div class="content">
+	    		content1
+	    	</div>
+	    	<div class="content">
+	    		content2
+	    	</div>
+	    	<div class="content">
+	    		content3
+	    	</div>
+	    </div>
+    </div>
+<script type="text/javascript" src="../script/my.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+	var myTab1 = new tab();
+	myTab1.init({
+		list: "tab1",
+		content: "content1",
+		cls: "content"
+	});
+	var myTab2 = new tab();
+	myTab2.init({
+		list: "tab2",
+		content: "content2",
+		cls: "content"
+	});
+}
+var tab = function(){};
+tab.prototype = {
+	init: function(opt){
+		this.list = document.getElementById(opt.list);
+		this.content = document.getElementById(opt.content);
+		this.li = this.list.getElementsByTagName('li');
+		this.cls = getByClass(opt.cls || 'content', this.content);
+		this.cls[0].style.display = 'block';
+		this.li[0].className = 'active';
+		this.listenTab();
+	},
+	listenTab: function(){
+		var that = this;
+		this.list.addEventListener('click', function(ev){
+			var e = ev || event;
+			var obj = e.target;
+			if(obj.nodeName.toLowerCase()  === 'li'){
+				for(var i = 0, len = that.li.length; i < len; i++){
+					console.log(obj === that.li[i])
+					if(obj === that.li[i]){
+						that.cls[i].style.display = 'block';
+						that.li[i].className = 'active';
+					}else{
+						that.cls[i].style.display = 'none';
+						that.li[i].className = '';
+					}
+				}
+			}
+		}, false);
+	}
+}
+</script>
+</body>
+</html>
