@@ -80,8 +80,8 @@ searchSelect.prototype = {
 		this.select.onclick = function(ev){
 			var e = ev || event;
 			var aOption = getByClass(that.cls);
-			for (var i = 0, len = aOption.length; i < len; i++) {
-				aOption[i].style.display == "block" && (aOption[i].style.display = "none");
+			for (var i = 0, len = aOption.length; i < len; i++) {/*所有searchSelect隐藏*/
+				getStyle(aOption[i], "display") == "block" && (aOption[i].style.display = "none");
 			}
 			that.updateOption(true);
 			stopBubble(e);
@@ -96,7 +96,7 @@ searchSelect.prototype = {
 			stopBubble(e);
 		}
 		document.addEventListener('click', function(){
-			that.option.style.display == "block" && (that.option.style.display = "none");
+			getStyle(that.option, "display") == "block" && (that.option.style.display = "none");
 		}, false);
 	},
 	listenKeyUp: function(){
@@ -118,7 +118,7 @@ searchSelect.prototype = {
 			}
 		}
 		this.option.appendChild(frag);
-		this.option.style.display == "none" && (this.option.style.display = "block");
+		getStyle(this.option, "display") == "none" && (this.option.style.display = "block");
 		this.option.innerHTML || (this.option.style.display = "none");
 	}
 };
