@@ -83,7 +83,7 @@ searchSelect.prototype = {
 			for (var i = 0, len = aOption.length; i < len; i++) {/*所有searchSelect隐藏*/
 				getStyle(aOption[i], "display") == "block" && (aOption[i].style.display = "none");
 			}
-			that.updateOption(true);
+			that.updateOption();
 			stopBubble(e);
 		}
 
@@ -105,12 +105,12 @@ searchSelect.prototype = {
 			that.updateOption();
 		}
 	},
-	updateOption: function(type){
+	updateOption: function(){
 		this.option.innerHTML = "";
-		var val = this.select.value;
+		var val = this.select.value.replace(/(^\s*)|(\s*$)/g, "");
 		var frag = document.createDocumentFragment();
 		for(var i = 0, len = this.data.length; i < len; i++){
-			if(type || this.data[i].toLowerCase().indexOf(val.toLowerCase()) != -1){
+			if(!val || this.data[i].toLowerCase().indexOf(val.toLowerCase()) != -1){
 				var a = document.createElement('a');
 				a.href = "#";
 				a.innerHTML = this.data[i];

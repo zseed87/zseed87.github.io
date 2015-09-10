@@ -12,6 +12,7 @@
 			{"title":"../","url":"index.html"},
 			{"title":"3D旋转木马","url":"carrousel/demo1.html"},
 			{"title":"仿妙味图片轮播","url":"carrousel/demo2.html"},
+			{"title":"CSS3图片轮播百叶窗特效","url":"carrousel/coolImg.html"},
 			{"title":"可搜索的下拉框","url":"select/"},
 			{"title":"简单的选项卡","url":"tab/"},
 			{"title":"简单的加载中动画","url":"loader/loader.html"}

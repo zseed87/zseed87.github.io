@@ -24,6 +24,48 @@ function getStyle(obj, attr){
 	return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj, null)[attr];
 }
 
+function appendBefore(obj, nObj){
+	var oParent = obj.parentNode;
+	if(oParent){
+		oParent.insertBefore(nObj, obj);
+	}
+}
+
+function appendAfter(obj, nObj){
+	var oParent = obj.parentNode;
+	if(oParent){
+		var oNext = obj.nextSibling;
+		if(oNext){
+			oParent.insertBefore(nObj, oNext);
+		}else{
+			oParent.appendChild(nObj);
+		}
+	}
+}
+
+function hasClass(obj, cls) {
+    return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+}
+
+function addClass(obj, cls) {
+    if (!this.hasClass(obj, cls)) obj.className += " " + cls;
+}
+
+function removeClass(obj, cls) {
+    if (hasClass(obj, cls)) {
+        var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+        obj.className = obj.className.replace(reg, ' ');
+    }
+}
+
+function toggleClass(obj,cls){
+    if(hasClass(obj,cls)){
+        removeClass(obj, cls);
+    }else{
+        addClass(obj, cls);
+    }
+}
+
 function startMove(obj, json, fn, speed){
 	clearInterval(obj.timer);
 	obj.timer = setInterval(function(){
@@ -65,4 +107,49 @@ function stopBubble(e){
         e.cancelBubble=true;
     }
     return false;
+}
+
+function parseURL(url) {
+    var a =  document.createElement('a');
+    a.href = url;
+    return {
+        source: url,
+        protocol: a.protocol.replace(':',''),
+        host: a.hostname,
+        port: a.port,
+        query: a.search,
+        params: (function(){
+            var ret = {},
+                seg = a.search.replace(/^\?/,'').split('&'),
+                len = seg.length, i = 0, s;
+            for (;i<len;i++) {
+                if (!seg[i]) { continue; }
+                s = seg[i].split('=');
+                ret[s[0]] = s[1];
+            }
+            return ret;
+        })(),
+        file: (a.pathname.match(/\/([^\/?#]+)$/i) || [,''])[1],
+        hash: a.hash.replace('#',''),
+        path: a.pathname.replace(/^([^\/])/,'/$1'),
+        relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [,''])[1],
+        segments: a.pathname.replace(/^\//,'').split('/')
+    };
+}
+
+/*事件绑定*/
+function onEvent(type, elem, eventHandle){
+	if(elem.addEventListener){
+		elem.addEventListener(type, eventHandle, false);
+	}else if(elem.attachEvent) {
+		elem.attachEvent("on" + type, eventHandle);
+	}
+}
+
+function offEvent(type, elem, eventHandle){
+	if(elem.removeEventListener){
+		elem.removeEventListener(type, eventHandle, false);
+	}else if(elem.detachEvent) {
+		elem.detachEvent("on" + type, eventHandle);
+	}
 }

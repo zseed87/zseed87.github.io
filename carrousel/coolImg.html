@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>CSS3图片轮播百叶窗特效</title>
+<link rel="stylesheet" type="text/css" href="../style/reset.css">
+<style type="text/css">
+.wrapper{
+	width: 820px;
+	margin: 0 auto;
+}
+.bigPic{
+	height: 512px;
+}
+.bigPic > div{
+	opacity: 1;
+	width: 100%;
+	background-color: #fff;
+	display: block;
+}
+.smallPic{
+	margin-top: 20px;
+	text-align: center;
+}
+.smallPic li{
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+	margin: 0 10px 0;
+	border-radius: 50%;
+	overflow: hidden;
+	border: 5px solid #6cf;
+	opacity: .6;
+	cursor: pointer;
+	transition: all .5s;
+}
+.smallPic li:hover{
+	opacity: 1;
+	border: 5px solid #1fcf6d;
+	transform: rotate(360deg) scale(1.1);
+}
+.smallPic img{
+	width: 100%;
+	height: 100%;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+	<div class="bigPic">
+	</div>
+	<ul class="smallPic">
+		<li><img src="images/1.jpg"></li>
+		<li><img src="images/2.jpg"></li>
+		<li><img src="images/3.jpg"></li>
+	</ul>
+</div>
+<script type="text/javascript">
+window.onload = function(){
+	var PIC_PARTS_COUNTS = 32;	//图片分割的数量和高度，相乘即为整张图片的高
+	var PIC_PARTS_HEIGHT = 16;
+	var bigPic = document.querySelector('.bigPic');
+	var smallPic = document.querySelector('.smallPic');
+
+	smallPic.addEventListener('click', function(ev){
+		var e = ev || event;
+		var tName = e.target.tagName;
+		if(e.target.tagName.toLowerCase() === 'img'){
+			bigPic.innerHTML = '';
+			var fragments = document.createDocumentFragment();
+			for(var i = 0; i < PIC_PARTS_COUNTS; i++){
+				var div = document.createElement('div');
+				div.style.cssText = [
+					"height: "+ PIC_PARTS_HEIGHT +"px",
+					"transition: opacity .5s linear "+ (0.1 * i) +"s",
+				].join(';');
+				fragments.appendChild(div);
+			}
+			bigPic.appendChild(fragments);
+			bigPic.style.backgroundImage = 'url('+ e.target.src +')';
+			setTimeout(function(){
+				var aDiv = bigPic.querySelectorAll('div');
+				for(var i = 0; i< PIC_PARTS_COUNTS; i++){
+					aDiv[i].style.opacity = '0';
+				}
+			}, 200);
+			return false;
+		}
+		return false;
+	}, false);
+}
+</script>
+</body>
+</html>

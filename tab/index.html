@@ -78,20 +78,7 @@
     </div>
 <script type="text/javascript" src="../script/my.js"></script>
 <script type="text/javascript">
-window.onload = function(){
-	var myTab1 = new tab();
-	myTab1.init({
-		list: "tab1",
-		content: "content1",
-		cls: "content"
-	});
-	var myTab2 = new tab();
-	myTab2.init({
-		list: "tab2",
-		content: "content2",
-		cls: "content"
-	});
-}
+(function(window){
 var tab = function(){};
 tab.prototype = {
 	init: function(opt){
@@ -110,7 +97,6 @@ tab.prototype = {
 			var obj = e.target;
 			if(obj.nodeName.toLowerCase()  === 'li'){
 				for(var i = 0, len = that.li.length; i < len; i++){
-					console.log(obj === that.li[i])
 					if(obj === that.li[i]){
 						that.cls[i].style.display = 'block';
 						that.li[i].className = 'active';
@@ -122,6 +108,23 @@ tab.prototype = {
 			}
 		}, false);
 	}
+}
+window.Tab = function(opt){
+	var obj = new tab();
+	return obj.init(opt);
+}
+})(window);
+window.onload = function(){
+	Tab({
+		list: "tab1",
+		content: "content1",
+		cls: "content"
+	});
+	Tab({
+		list: "tab2",
+		content: "content2",
+		cls: "content"
+	});
 }
 </script>
 </body>

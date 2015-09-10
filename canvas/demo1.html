@@ -32,7 +32,7 @@ window.onload = function(){
 		ctx.stroke();
 	}
 
-	if(true){
+	if(!true){
 		pic = new Image();
 		pic.src = "http://images.cnblogs.com/cnblogs_com/vajoy/558870/o_5.jpg";
 		pic.onload = patternFill;
@@ -122,7 +122,7 @@ window.onload = function(){
 		ctx.strokeText("blog.itjeek.com!", 10, 100);
 	}
 
-	if(!true){
+	if(true){
 		ctx.beginPath();
 		ctx.arc(60, 60, 50, 0, Math.PI * 2, true);
 		ctx.lineWidth = 2.0;
@@ -150,7 +150,7 @@ window.onload = function(){
 	}
 }
 
-function preImage(url,callback){
+function preImage(url, callback){
     var img = new Image(); //创建一个Image对象，实现图片的预下载
     img.src = url;
     if(img.complete) { // 如果图片已经存在于浏览器缓存，直接调用回调函数
