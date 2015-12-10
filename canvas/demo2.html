@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>网站导航背景</title>
+<link rel="stylesheet" type="text/css" href="../style/reset.css">
+<style type="text/css">
+#myCanvas{
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #70B7FD;
+    width: 100%;
+    height: 200px;
+}
+</style>
+</head>
+<body>
+    <canvas id="myCanvas">
+        您的浏览器不支持canvas，建议使用最新版的Chrome
+    </canvas>
+<script type="text/javascript">
+var RAF = (function () {
+    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||  function (callback) {
+                window.setTimeout(callback, 1000 / 60);
+            };
+})();
+window.onload = function(){
+    var c = document.getElementById('myCanvas');
+    var ctx = c.getContext('2d');
+    var e = null;
+    var dots = [];  //粒子存放器
+    var i , j = 0;
+    window.onresize = cResize;
+    cResize();
+
+    var mPosxy = {"x": null, "y": null, "max": 8000};
+    c.onmousemove = function(ev){
+        e = ev || event;
+        mPosxy.x = e.clientX;
+        mPosxy.y = e.clientY;
+    }
+    c.onmouseout = function(ev){
+        e = ev || event;
+        mPosxy.x = null;
+        mPosxy.y = null;
+    }
+
+    for(i = 120; i--;){
+        dots.push({
+            "x": Math.random() * c.width,
+            "y": Math.random() * c.height,
+            "xa": Math.random() * 0.6,
+            "ya": Math.random() * 0.6,
+            "max": 6000
+        });
+    }
+
+    setTimeout(function(){
+        dotsMove();
+    }, 100);
+
+    function dotsMove(){
+        ctx.clearRect(0, 0, c.width, c.height);
+
+        var ndots  = [mPosxy].concat(dots);
+
+        for(i = dots.length; i--;){
+            var dot = dots[i];
+            // 粒子位移
+            dot.x += dot.xa;
+            dot.y += dot.ya;
+            // 遇到边界将加速度反向
+            dot.xa = (dot.x > c.width || dot.x < 0)? -dot.xa : dot.xa;
+            dot.ya = (dot.y > c.height || dot.y < 0)? -dot.ya : dot.ya;
+            // 绘制点
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(dot.x - 0.5, dot.y - 0.5, 1, 1);
+
+            // 循环比对粒子间的距离
+            for (j = ndots.length; j--;) {
+                var d2 = ndots[j];
+                if (dot === d2 || d2.x === null || d2.y === null) continue;
+                var xc = dot.x - d2.x;
+                var yc = dot.y - d2.y;
+                // 两个粒子之间的距离
+                var dis = xc * xc + yc * yc;
+                // 距离比
+                var ratio;
+                // 如果两个粒子之间的距离小于粒子对象的max值，则在两个粒子间画线
+                if(dis < d2.max){
+                    // 如果是鼠标，则让粒子向鼠标的位置移动
+                    if (d2 === mPosxy && dis > (d2.max / 2)) {
+                        dot.x -= xc * 0.01;
+                        dot.y -= yc * 0.01;
+                    }
+                    // 计算距离比
+                    ratio = (d2.max - dis) / d2.max;
+                    // 画线
+                    ctx.beginPath();
+                    ctx.lineWidth = ratio / 2;
+                    ctx.strokeStyle = 'rgba(255, 255, 255, ' + (ratio + 0.2) + ')';
+                    ctx.moveTo(dot.x , dot.y);
+                    ctx.lineTo(d2.x , d2.y);
+                    ctx.stroke();
+                }
+            }
+            // 将已经计算过的粒子从数组中删除
+            ndots.splice(ndots.indexOf(dot), 1);
+        }
+        RAF(dotsMove);
+    }
+
+    function cResize(){
+        c.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        c.height = 200;
+    }
+};
+</script>
+</body>
+</html>

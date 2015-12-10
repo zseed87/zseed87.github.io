@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>文字粒子化</title>
+<link rel="stylesheet" type="text/css" href="../style/reset.css">
+<style type="text/css">
+#warpper{
+    position: relative;
+    margin: 100px auto 0;
+    width: 600px;
+    height: 400px;
+}
+</style>
+</head>
+<body>
+    <div id="warpper">
+        <canvas id="myCanvas" height='300' width='600'>
+            您的浏览器不支持canvas，建议使用最新版的Chrome
+        </canvas>
+        <input type="text" id="myText" value="测试">
+        <button id="myBtn">GO</button>
+    </div>
+<script type="text/javascript">
+var RAF = (function () {
+    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||  function (callback) {
+                window.setTimeout(callback, 1000 / 60);
+            };
+})();
+
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext('2d');
+var FOCAL_LEN = 250;    //井深常量
+var DOT_RADIUS = 3;     //粒子半径
+var PX_INTERVAL = 6;    //有效粒子的像素间隔
+
+/**
+ * [Dot description]
+ * @param {[type]} dz [聚合坐标x]
+ * @param {[type]} dy [聚合坐标y]
+ * @param {[type]} dz [聚合坐标x]
+ * @param {[type]} tx  [运动坐标x]
+ * @param {[type]} ty  [运动坐标y]
+ * @param {[type]} tz  [运动坐标z]
+ * @param {[type]} x  [离散坐标x]
+ * @param {[type]} y  [离散坐标y]
+ * @param {[type]} z  [离散坐标z]
+ * @param {[type]} radius  [粒子半径]
+ */
+var Dot = function(centerX , centerY , centerZ , radius){
+    this.dx = centerX;
+    this.dy = centerY;
+    this.dz = centerZ;
+    this.tx = 0;
+    this.ty = 0;
+    this.tz = 0;
+    this.x = centerX;
+    this.y = centerY;
+    this.z = centerZ;
+    this.radius = radius;
+}
+
+Dot.prototype = {
+    paint:function(){
+        ctx.save();
+        ctx.beginPath();
+        var scale = FOCAL_LEN/(FOCAL_LEN + this.z);
+        ctx.arc(c.width / 2 + (this.x - c.width / 2) * scale , c.height / 2 + (this.y - c.height / 2) * scale, this.radius * scale , 0 , 2 * Math.PI);
+        ctx.fillStyle = "rgba(50, 50, 50, "+ scale +")";
+        ctx.fill();
+        ctx.restore();
+    }
+};
+(function(){
+    var i = 0;
+    var text = document.getElementById('myText');
+    var dots = getimgData(text.value);
+    var dot = null;
+    var pause = false;
+    var lastTime;
+    var derection = true;   //聚合或离散
+
+    initAnimate();
+    function initAnimate(){
+        for(i = dots.length; i--;){
+            dot = dots[i];
+            dot.x = Math.random() * c.width;
+            dot.y = Math.random() * c.height;
+            dot.z = Math.random() * (FOCAL_LEN * 2) - FOCAL_LEN;
+
+            dot.tx = Math.random() * c.width;
+            dot.ty = Math.random() * c.height;
+            dot.tz = Math.random() * (FOCAL_LEN * 2) - FOCAL_LEN;
+            dot.paint();
+        }
+        animate();
+    }
+
+    function animate(){
+        animateRunning = true;
+        var thisTime = Date.now();
+        ctx.clearRect(0, 0, c.width, c.height);
+        for(i = dots.length; i--;){
+            var dot = dots[i];
+            if(derection){
+                if (Math.abs(dot.dx - dot.x) < 0.1 && Math.abs(dot.dy - dot.y) < 0.1 && Math.abs(dot.dz - dot.z) < 0.1) {
+                    dot.x = dot.dx;
+                    dot.y = dot.dy;
+                    dot.z = dot.dz;
+                    if(thisTime - lastTime > 300) derection = false;
+                } else {
+                    dot.x = dot.x + (dot.dx - dot.x) * 0.1;
+                    dot.y = dot.y + (dot.dy - dot.y) * 0.1;
+                    dot.z = dot.z + (dot.dz - dot.z) * 0.1;
+                    lastTime = Date.now();
+                }
+            }else {
+                if (Math.abs(dot.tx - dot.x) < 0.1 && Math.abs(dot.ty - dot.y) < 0.1 && Math.abs(dot.tz - dot.z) < 0.1) {
+                    dot.x = dot.tx;
+                    dot.y = dot.ty;
+                    dot.z = dot.tz;
+                    pause = true;
+                } else {
+                    dot.x = dot.x + (dot.tx - dot.x) * 0.1;
+                    dot.y = dot.y + (dot.ty - dot.y) * 0.1;
+                    dot.z = dot.z + (dot.tz - dot.z) * 0.1;
+                    pause = false;
+                }
+            }
+            dot.paint();
+        }
+        !pause && RAF(animate);
+    }
+
+    function getimgData(text){
+        drawText(text);
+        var imgData = ctx.getImageData(0, 0, c.width, c.height);
+        ctx.clearRect(0, 0, c.width, c.height);
+        dots = [];
+        for(var x = 0; x < imgData.width; x += 6){
+            for(var y = 0;y < imgData.height; y += 6){
+                i = (y * imgData.width + x) * 4;
+                if(imgData.data[i] >= 128){
+                    dot = new Dot(x - DOT_RADIUS , y - DOT_RADIUS , 0 , DOT_RADIUS);
+                    dots.push(dot);
+                }
+            }
+        }
+        return dots;
+    }
+
+    function drawText(text){
+        ctx.save()
+        ctx.font = "200px 微软雅黑 bold";
+        ctx.fillStyle = "rgba(255, 255, 255, 1)";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(text , c.width/2 , c.height/2);
+        ctx.restore();
+    }
+
+    document.getElementById('myBtn').onclick = function(){
+        if(!pause) return;
+        dots = getimgData(text.value);
+        derection=true;
+        pause = false;
+        initAnimate();
+    }
+})();
+</script>
+</body>
+</html>

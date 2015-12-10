@@ -1,6 +1,6 @@
 ;(function(){
 	//一、二级菜单参数配置
-	var list_one = ["表格操作","小控件","小游戏"];
+	var list_one = ["表格操作", "小控件", "小游戏", "canvas特效"];
 	var list_two = [
 		[
 			{"title":"../","url":"index.html"},
@@ -21,6 +21,11 @@
 			{"title":"../","url":"index.html"},
 			{"title":"2048","url":"2048/"},
 			{"title":"正方体6面翻转","url":"css3/cube.html"}
+		],
+		[
+			{"title":"../","url":"index.html"},
+			{"title":"网站导航背景","url":"canvas/demo2.html"},
+			{"title":"文字粒子化","url":"canvas/demo3.html"}
 		]
 	];
 	var oBody = document.getElementsByTagName('body')[0];
