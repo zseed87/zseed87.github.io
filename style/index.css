@@ -1,12 +1,18 @@
 @charset "UTF-8";
 .list-box{
-	position: relative;
-	margin: 100px auto 0;
+	position: absolute;
+	margin-top: 100px;
 	width: 400px;
+	left: 50%;
 	height: auto;
 	border-radius: 5px;
 	padding: 15px;
 	text-align: center;
+	-webkit-transform: translateX(-50%);
+	   -moz-transform: translateX(-50%);
+	    -ms-transform: translateX(-50%);
+	     -o-transform: translateX(-50%);
+	        transform: translateX(-50%);
 }
 .top-caret, .bottom-caret{
 	width: 0;
@@ -63,4 +69,11 @@
 }
 .demo-list:hover a{
   color: #fff;
+}
+#listBg{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
 }
