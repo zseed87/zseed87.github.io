@@ -6,68 +6,44 @@
 <title>三列等高布局</title>
 <link rel="stylesheet" type="text/css" href="style/reset.css">
 <style type="text/css">
-.container{
-	width: 1000px;
-	margin: 0 auto;
-	overflow: hidden;
+.main {
+   float: left;
+   width: 100%;
+   background:#39c;
+   height:300px;
 }
-.left, .center, .right{
-	margin-bottom: -10000px;
-	padding-bottom: 10000px;
+.sub {
+   float: left;
+   width: 190px;
+   margin-left: -100%;
+   background:#f60;
+   height:300px;
+   position:relative;
+   left:-190px;
 }
-.left{
-	width:250px;
-	float: left;
-	background-color: #789;
+.extra {
+     float: left;
+     width: 230px;
+     margin-left: -230px;
+     background:#666;
+     height:300px;
+     position:relative;
+     right:-230px;
 }
-.center{
-	width:500px;
-	float: left;
-	background-color: #6cf;
-}
-.right{
-	width: 250px;
-	float: right;
-	background-color: #d34;
+#bd {
+  padding: 0 230px 0 190px;
 }
 </style>
 </head>
 <body>
-    <div class="container">
-    	<div class="left">
-    		<p>left</p>
-	        <p>left</p>
-	        <p>left</p>
-	        <p>left</p>
-	        <p>left</p>
-    	</div>
-    	<div class="center">
-    		<p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-	        <p>center</p>
-    	</div>
-    	<div class="right">
-    		<p>right</p>
-	        <p>right</p>
-	        <p>right</p>
-    	</div>
-    </div>
+	<div id="page">
+		<div id="hd"></div>
+		<div id="bd">
+			<div class="main">main</div>
+			<div class="sub">sub</div>
+			<div class="extra">extra</div>
+		</div>
+		<div id="ft"></div>
+	</div>
 </body>
 </html>

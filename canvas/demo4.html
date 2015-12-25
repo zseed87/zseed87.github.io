@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>黑夜雪景</title>
+<link rel="stylesheet" type="text/css" href="../style/reset.css">
+<style type="text/css">
+#warpper{
+    position: relative;
+    margin: 100px auto 0;
+    width: 600px;
+    height: 400px;
+    background-color: #000;
+}
+</style>
+</head>
+<body>
+    <div id="warpper">
+        <canvas id="myCanvas" height='400' width='600'>
+            您的浏览器不支持canvas，建议使用最新版的Chrome
+        </canvas>
+    </div>
+<script type="text/javascript">
+var RAF = (function () {
+    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||  function (callback) {
+                window.setTimeout(callback, 1000 / 60);
+            };
+})();
+
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext('2d');
+var FOCAL_LEN = 250;    //井深常量
+var IMAGE_SONW = null;  //雪
+
+var Dot = function(x , y , s){
+    this.x = x;
+    this.y = y;
+    this.s = s;
+    this.dy = FOCAL_LEN/(FOCAL_LEN + this.s) + 1;
+    this.dx = (0 | (Math.random() * 2)) / 2;
+}
+
+Dot.prototype = {
+    paint:function(){
+        ctx.save();
+        ctx.beginPath();
+        var scale = FOCAL_LEN/(FOCAL_LEN + this.s);
+        var _this = this;
+        ctx.drawImage(IMAGE_SONW, _this.x, _this.y, 22 * scale, 22 * scale);
+        ctx.restore();
+    }
+};
+(function(){
+    var i = 0;
+    var dot = null;
+    var dots = [];
+
+    preImage("snow.png", function(){
+        IMAGE_SONW = this;
+        initAnimate();
+    });
+    function initAnimate(){
+        for(i = 100; i--;){
+            dot = new Dot(Math.random() * c.width, Math.random() * c.height, Math.random() * FOCAL_LEN * 2);
+            dot.paint();
+            dots.push(dot);
+        }
+        animate();
+    }
+
+    function animate(){
+        ctx.clearRect(0, 0, c.width, c.height);
+        for(i = dots.length; i--;){
+            var dot = dots[i];
+            if (400 - dot.y < 0.1) {
+                dot.x = Math.random() * c.width;
+                dot.y = - Math.random() * c.height / 2;
+            } else {
+                dot.x += dot.dx;
+                dot.y += dot.dy;
+            }
+            dot.paint();
+        }
+        RAF(animate);
+    }
+})();
+
+function preImage(url, callback){
+    var img = new Image(); //创建一个Image对象，实现图片的预下载
+    img.src = url;
+    if(img.complete) { // 如果图片已经存在于浏览器缓存，直接调用回调函数
+        callback.call(img);
+        return; // 直接返回，不用再处理onload事件
+    }
+    img.onload = function () { //图片下载完毕时异步调用callback函数
+        callback.call(img);//将回调函数的this替换为Image对象
+    };
+}
+</script>
+</body>
+</html>

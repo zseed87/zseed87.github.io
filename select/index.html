@@ -52,35 +52,37 @@ window.onload = function(){
 	for(var i = 1; i < 100; i++){//模拟数据
 		data.push(i+"");
 	}
-	var mySelect = new searchSelect();
-	mySelect.init({
+	var mySelect = new SearchSelect({
 		select: "mySelect",
 		option: "myOption",
 		data: data
 	});
-	var mySelect2 = new searchSelect();
-	mySelect2.init({
+	mySelect.init();
+	var mySelect2 = new SearchSelect({
 		select: "mySelect2",
 		option: "myOption2",
 		data: ['sahhkds','ei3oew','2kdo4fl','我是爱的','圣诞快乐']
 	});
 }
-var searchSelect = function(){}
-searchSelect.prototype = {
-	init: function(opt){
-		this.select = document.getElementById(opt.select);
-		this.option = document.getElementById(opt.option);
-		this.data = opt.data;
-		this.cls = opt.cls || "myOption";
+var SearchSelect = function(opt){
+	this.select = document.getElementById(opt.select);
+	this.option = document.getElementById(opt.option);
+	this.data = opt.data;
+	this.cls = opt.cls || "myOption";
+}
+SearchSelect.prototype = {
+	constructor: SearchSelect,
+	init: function(){
 		this.listenClick();
 		this.listenKeyUp();
+		return this;
 	},
 	listenClick: function(){
 		var that = this;
 		this.select.onclick = function(ev){
 			var e = ev || event;
 			var aOption = getByClass(that.cls);
-			for (var i = 0, len = aOption.length; i < len; i++) {/*所有searchSelect隐藏*/
+			for (var i = 0, len = aOption.length; i < len; i++) {/*所有SearchSelect隐藏*/
 				getStyle(aOption[i], "display") == "block" && (aOption[i].style.display = "none");
 			}
 			that.updateOption();
@@ -122,7 +124,6 @@ searchSelect.prototype = {
 		this.option.innerHTML || (this.option.style.display = "none");
 	}
 };
-searchSelect.prototype.constructor = searchSelect;
 </script>
 </body>
 </html>
