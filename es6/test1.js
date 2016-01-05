@@ -82,6 +82,44 @@ class Foo {
     return 'hello';
   }
 }
-console.log(Foo.classMethod());	 // 'hello'
+// console.log(Foo.classMethod());	 // 'hello'
 var foo = new Foo();
 // foo.classMethod()	//静态方法不能被实例调用
+
+// var a = [
+//   "Hydrogen",
+//   "Helium",
+//   "Lithium",
+//   "Beryl­lium"
+// ];
+
+// var a2 = a.map(function(s){ return s.length });
+
+// var a3 = a.map( s => s.length );
+
+// console.log(a2);
+// console.log(a3);
+
+// console.log((i => i+1)(4));
+
+
+var adder = {
+  base : 1,
+
+  add : function(a) {
+    var f = v => v + this.base;
+    return f(a);
+  },
+
+  addThruCall: function(a) {
+    var f = v => v + this.base;   //箭头函数无法更改this,依然为2
+    var b = {
+      base : 2
+    };
+
+    return f.call(b, a);
+  }
+};
+
+console.log(adder.add(1));         // This would log to 2
+console.log(adder.addThruCall(1)); // This would log to 2 still
