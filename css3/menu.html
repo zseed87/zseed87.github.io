@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>旋转菜单</title>
+<link rel="stylesheet" type="text/css" href="../style/reset.css">
+<style type="text/css">
+#warpper {
+	position: relative;
+	width: 300px;
+	height: 300px;
+	margin: 100px auto 0;
+	transform: rotate(45deg);
+}
+#menu {
+	position: absolute;
+	width: 70px;
+	height: 70px;
+	border: 10px solid #fff;
+	transform: translateX(-50%) translateY(-50%);
+	top: 50%;
+	left: 50%;
+	border-radius: 50%;
+	background-color: green;
+}
+#item {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	overflow: hidden;
+	transform: scale(0.1);
+	transition: transform .5s;
+}
+#item.item-scale {
+	transform: scale(1);
+}
+#item > li {
+	position: absolute;
+	width: 50%;
+	height: 50%;
+	background-color: #5cf;
+	background-clip: content-box;
+	box-sizing: border-box;
+	padding-right: 5px;
+	padding-bottom: 5px;
+	transform-origin: 100% 100%;
+	transition: transform .5s;
+	z-index: -1;
+}
+
+#item > .item:nth-child(1){
+	transform: rotate(0deg);
+}
+#item > .item:nth-child(2){
+	transform: rotate(90deg);
+}
+#item > .item:nth-child(3){
+	transform: rotate(180deg);
+}
+#item > .item:nth-child(4){
+	transform: rotate(270deg);
+}
+</style>
+</head>
+<body>
+    <div id="warpper">
+		<ul id="item">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<div id="menu"></div>
+    </div>
+<script type="text/javascript">
+	(function(){
+		var menu = document.getElementById('menu');
+		var item = document.getElementById('item');
+		var items = item.getElementsByTagName('li');
+		menu.onclick = function (){
+			if(item.className){
+				for(var i = items.length; i--;){
+					items[i].className = '';
+				}
+				setTimeout(function () {
+					item.className = '';
+				}, 500);
+			}else{
+				item.className = 'item-scale';
+				setTimeout(function () {
+					for(var i = items.length; i--;){
+						items[i].className = 'item';
+					}
+				}, 500);
+			}
+		}
+	})();
+</script>
+</body>
+</html>
